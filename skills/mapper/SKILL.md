@@ -5,7 +5,7 @@ description: Map and document codebases with parallel subagents, fast scanning, 
 
 # Mapper
 
-Mapea codebases de cualquier tamano usando subagentes en paralelo y un escaneo rapido con cache, hash de contenido, hashes por modulo y metadatos git.
+Mapea codebases de cualquier tamano usando subagentes en paralelo y un escaneo rapido con cache, hash de contenido, hashes por modulo y metadatos git. Incluye un wrapper CLI para ejecutar flujos completos.
 
 **Regla clave: el agente principal orquesta, los subagentes leen.** Nunca leas los archivos directamente desde el agente principal. Divide y delega.
 
@@ -32,6 +32,23 @@ python3 ${CLAUDE_PLUGIN_ROOT}/skills/mapper/scripts/plan-assignments.py \
 3. Lanza subagentes en paralelo con los grupos de `assignments.txt`.
 4. Sintetiza los reportes en `docs/CODEBASE_MAP.md` y un resumen rapido.
 5. Actualiza `CLAUDE.md` y, si existe, `AGENTS.md`.
+
+## Atajos de comando
+
+Puedes invocar modos rapidos desde Claude:
+
+- `/mapper quick` (scan + plan)
+- `/mapper full` (scan + plan + risk + merge)
+- `/mapper update` (cambios + scan + plan + risk + merge)
+- `/mapper risk` (risk + merge)
+
+## Wrapper CLI
+
+Para ejecutar todo desde la terminal:
+
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/mapper/scripts/run-mapper.py . --mode full
+```
 
 ## Reducir costos de tokens (skeleton opcional)
 
@@ -222,6 +239,7 @@ Estructura sugerida para `docs/CODEBASE_NAV.md`:
 - `--cache-compress` comprime el cache (gzip).
 - `--git-pathspec` prefiltra include/exclude via git.
 - `--changed-range` o `--changed-since-commit` limita el escaneo a cambios recientes.
+- Usa `run-mapper.py` para ejecutar un flujo completo con preflight.
 
 ## Configuracion (.mapper.json)
 

@@ -31,6 +31,7 @@ flowchart LR
 - Emits module hashes to compare against previous scans.
 - Generates risk signals (TODO/FIXME/HACK, large files, missing tests, churn).
 - Merges risk signals into the main map when requested.
+- Provides a one-command wrapper for common workflows.
 
 ## Installation
 
@@ -39,6 +40,8 @@ flowchart LR
 ```bash
 claude plugins install mapper
 ```
+
+Then run `/mapper full` in Claude Code.
 
 ### Manual Installation
 
@@ -85,6 +88,12 @@ If you are using another agent, follow the CLI quick start below and point your 
 
 ## Quick Start (CLI)
 
+Fast path using the wrapper:
+
+```bash
+python3 skills/mapper/scripts/run-mapper.py . --mode full
+```
+
 1) Scan the repo:
 
 ```bash
@@ -117,6 +126,13 @@ python3 skills/mapper/scripts/merge-risk-signals.py \
   --map docs/CODEBASE_MAP.md \
   --risk docs/RISK_SIGNALS.md
 ```
+
+Wrapper modes:
+
+- `--mode quick`: scan + plan
+- `--mode full`: scan + plan + risk + merge
+- `--mode update`: git changes + scan (changed only) + plan + risk + merge
+- `--mode risk`: risk + merge
 
 ## Update Mode (Incremental)
 
@@ -385,6 +401,7 @@ Copy the template from `.mapper.json.example` to get started.
 | `skills/mapper/scripts/skeletonize.py` | Build a reduced code skeleton for first-pass analysis |
 | `skills/mapper/scripts/risk-signals.py` | Emit risk signals (TODOs, large files, missing tests, churn) |
 | `skills/mapper/scripts/merge-risk-signals.py` | Merge risk signals into CODEBASE_MAP.md |
+| `skills/mapper/scripts/run-mapper.py` | Run end-to-end workflow with preflight |
 
 ## Troubleshooting
 

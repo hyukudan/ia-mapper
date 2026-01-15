@@ -30,6 +30,7 @@ flowchart LR
 - Surface entrypoints, top files, and churn hotspots.
 - Emits module hashes to compare against previous scans.
 - Generates risk signals (TODO/FIXME/HACK, large files, missing tests, churn).
+- Merges risk signals into the main map when requested.
 
 ## Installation
 
@@ -70,6 +71,41 @@ Invoke the skill:
 ```
 
 Or ask: "map this codebase".
+
+## Quick Start (CLI)
+
+1) Scan the repo:
+
+```bash
+python3 skills/mapper/scripts/scan-codebase.py . \
+  --format json \
+  --out .claude/mapper/scan.json
+```
+
+2) Plan subagent buckets:
+
+```bash
+python3 skills/mapper/scripts/plan-assignments.py \
+  .claude/mapper/scan.json \
+  --max-tokens 150000 \
+  --out .claude/mapper/assignments.txt
+```
+
+3) Generate risk signals:
+
+```bash
+python3 skills/mapper/scripts/risk-signals.py \
+  .claude/mapper/scan.json \
+  --out docs/RISK_SIGNALS.md
+```
+
+4) Merge risk signals into the map (after map is created):
+
+```bash
+python3 skills/mapper/scripts/merge-risk-signals.py \
+  --map docs/CODEBASE_MAP.md \
+  --risk docs/RISK_SIGNALS.md
+```
 
 ## Update Mode (Incremental)
 
@@ -151,6 +187,26 @@ python3 skills/mapper/scripts/scan-codebase.py . \
 +---------------------------------------+
 ```
 
+## Plugin Layout
+
+```
+.claude-plugin/
+  plugin.json
+skills/mapper/
+  SKILL.md
+  scripts/
+    scan-codebase.py
+    plan-assignments.py
+    git-changes.py
+    skeletonize.py
+    risk-signals.py
+    merge-risk-signals.py
+docs/
+  CODEBASE_MAP.md
+  CODEBASE_NAV.md
+  RISK_SIGNALS.md
+```
+
 ## Output Structure
 
 Outputs (recommended):
@@ -164,6 +220,9 @@ Outputs (recommended):
 
 `RISK_SIGNALS.md` is optional and generated via `risk-signals.py`.
 Also updates `CLAUDE.md` and `AGENTS.md` (if present) with a short summary and link to the map.
+
+`CLAUDE.md` and `AGENTS.md` are intended as entry points for new sessions and should point to:
+`docs/CODEBASE_MAP.md`, `docs/CODEBASE_NAV.md`, and `docs/RISK_SIGNALS.md`.
 
 `docs/CODEBASE_MAP.md` includes:
 
@@ -195,6 +254,13 @@ python3 skills/mapper/scripts/merge-risk-signals.py \
   --map docs/CODEBASE_MAP.md \
   --risk docs/RISK_SIGNALS.md
 ```
+
+## Claude / Agents Notes
+
+If you want consistent onboarding for future sessions, keep these files updated:
+
+- `CLAUDE.md`: short overview + links to generated docs.
+- `AGENTS.md`: per-agent hints + links to generated docs.
 
 ## Token Budgets
 

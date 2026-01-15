@@ -1,0 +1,8 @@
+{
+  "name": "mapper",
+  "description": "Maps and documents codebases using parallel subagents, fast scanning, incremental updates, and risk signals",
+  "author": {
+    "name": "hyukudan",
+    "url": "https://github.com/hyukudan"
+  }
+}

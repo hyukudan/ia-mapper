@@ -1,0 +1,37 @@
+{
+  "use_git": true,
+  "git_pathspec": true,
+  "workers": 0,
+  "cache": true,
+  "cache_compress": false,
+  "tokenizer": "tiktoken",
+  "hash_mode": "fast",
+  "max_tokens": 50000,
+  "max_size": 1000000,
+  "module_depth": 1,
+  "churn_commits": 200,
+  "entrypoints_limit": 20,
+  "top_files": 20,
+  "include": ["**/*"],
+  "exclude": ["**/*.test.*"],
+  "changed_scope": "modules",
+  "changed_depth": 1,
+  "risk": {
+    "patterns": ["TODO", "FIXME", "HACK", "XXX"],
+    "tokens_threshold": 5000,
+    "size_threshold": 200000,
+    "max_items": 50,
+    "test_patterns": ["tests/**", "__tests__/**"]
+  },
+  "skeleton": {
+    "max_lines": 400,
+    "max_bytes": 200000,
+    "keep_head": 30,
+    "keep_tail": 20,
+    "comment_backtrack": 2,
+    "min_keep_lines": 40,
+    "min_keep_ratio": 0.05,
+    "line_numbers": false,
+    "only_skeleton": false
+  }
+}

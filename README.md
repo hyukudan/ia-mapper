@@ -4,7 +4,7 @@
 ![python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![claude-code](https://img.shields.io/badge/claude-code-plugin-black)
 
-A Claude Code plugin that maps and documents codebases using parallel subagents.
+An agent-agnostic codebase mapper that can be used as a Claude Code plugin.
 Fast scans, incremental updates, and token-aware planning built in.
 
 ```
@@ -52,6 +52,15 @@ Or per-project:
 git clone <repo-url> .claude/skills/mapper
 ```
 
+### Standalone (any agent)
+
+You can use the scripts directly without Claude Code:
+
+```bash
+python3 skills/mapper/scripts/scan-codebase.py . --format json --out .claude/mapper/scan.json
+python3 skills/mapper/scripts/risk-signals.py .claude/mapper/scan.json --out docs/RISK_SIGNALS.md
+```
+
 ## Dependencies
 
 By default Mapper uses `tiktoken` for accurate token counts. If you prefer zero installs, set `--tokenizer heuristic`.
@@ -71,6 +80,8 @@ Invoke the skill:
 ```
 
 Or ask: "map this codebase".
+
+If you are using another agent, follow the CLI quick start below and point your agent to the generated docs.
 
 ## Quick Start (CLI)
 
@@ -261,6 +272,25 @@ If you want consistent onboarding for future sessions, keep these files updated:
 
 - `CLAUDE.md`: short overview + links to generated docs.
 - `AGENTS.md`: per-agent hints + links to generated docs.
+
+## Using with Other Agents
+
+Mapper is not tied to Claude. The outputs are plain markdown, so you can:
+
+1) Run the CLI flow to generate `docs/CODEBASE_MAP.md`, `docs/CODEBASE_NAV.md`, and `docs/RISK_SIGNALS.md`.
+2) Add or update `AGENTS.md` with links to those docs.
+3) In your agent prompt, reference the docs as the primary context.
+
+Example `AGENTS.md`:
+
+```markdown
+# Agent Notes
+
+Use the generated docs as the primary source of truth:
+- docs/CODEBASE_MAP.md
+- docs/CODEBASE_NAV.md
+- docs/RISK_SIGNALS.md
+```
 
 ## Token Budgets
 
